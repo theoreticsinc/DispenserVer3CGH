@@ -178,39 +178,52 @@ public class MainStart {
         String cardUID = null;
 
         System.out.println("Reader Ready!");
-        //Testing Dispenser
-        transistorDispense.pulse(1000, true);
-        Gpio.delay(2000);
-        transistorReject.pulse(1000, true);
+//        //Testing Dispenser
+//        transistorDispense.pulse(1000, true);
+//        Gpio.delay(2000);
+//        transistorReject.pulse(1000, true);
 
         //Testing Relays
-        relayBarrier.setState(false);
-        Gpio.delay(2000);
-        relayBarrier.setState(true);
-        Gpio.delay(2000);
+//        relayBarrier.setState(false);
+//        Gpio.delay(2000);
+//        relayBarrier.setState(true);
+//        Gpio.delay(2000);
 //        relayFan.setState(false);
 //        Gpio.delay(2000);
 //        relayFan.setState(true);
-        Gpio.delay(2000);
-        relayLights.setState(false);
-        Gpio.delay(2000);
-        relayLights.setState(true);        
-        System.out.print("RELAYS Tested!");
+//        Gpio.delay(2000);
+//        relayLights.setState(false);
+//        Gpio.delay(2000);
+//        relayLights.setState(true);        
+//        System.out.print("RELAYS Tested!");
         //Testing Remotely
 //        cards.add("ABC1234");
 
         //Test Dispenser State
-        System.out.println("Test Dispense State");
-        transistorDispense.pulse(500, true);
+//        System.out.println("Test Dispense State");
+//        transistorDispense.pulse(500, true);
+//        Gpio.delay(500);
+//        transistorDispense.pulse(500, true);
         
         while (true) {
             //System.out.print("!");
             strUID = "";
             text = scan.nextLine();
+//            text = "0023913213";
             if (null != text) {
                 try {
                     System.out.println("RAW: " + text);
                     cardUID = Long.toHexString(Long.parseLong(text));
+                    if (text.substring(0, 1).compareTo("0") == 0) {
+                        cardUID = "0" + cardUID;
+                    }
+                    else if (text.substring(0, 2).compareTo("00") == 0) {
+                        cardUID = "00" + cardUID;
+                    }
+                    else if (text.substring(0, 3).compareTo("000") == 0) {
+                        cardUID = "000" + cardUID;
+                    }
+                    
                     //cardUID = Integer.toHexString(Integer.parseInt(text));
                     cardUID = cardUID.toUpperCase();
                     strUID = cardUID.substring(6, 8) + cardUID.substring(4, 6) + cardUID.substring(2, 4) + cardUID.substring(0, 2);
@@ -223,7 +236,8 @@ public class MainStart {
                     if (prevUID.compareToIgnoreCase(strUID) != 0) {
                         //Uncomment Below to disable Read same Card
 //                        prevUID = strUID;
-
+//0024445901
+//
                         System.out.println("Card Read UID:" + strUID.substring(0, 8));
                         cardFromReader = strUID.substring(0, 8).toUpperCase();
 //
