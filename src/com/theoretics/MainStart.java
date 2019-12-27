@@ -214,16 +214,15 @@ public class MainStart {
                 try {
                     System.out.println("RAW: " + text);
                     cardUID = Long.toHexString(Long.parseLong(text));
-                    if (text.substring(0, 1).compareTo("0") == 0) {
+                    if (text.startsWith("0")) {
                         cardUID = "0" + cardUID;
-                    }
-                    else if (text.substring(0, 2).compareTo("00") == 0) {
+                    } else if (text.startsWith("00")) {
                         cardUID = "00" + cardUID;
-                    }
-                    else if (text.substring(0, 3).compareTo("000") == 0) {
+                    } else if (text.startsWith("000")) {
                         cardUID = "000" + cardUID;
+                    } else if (text.startsWith("0000")) {
+                        cardUID = "0000" + cardUID;
                     }
-                    
                     //cardUID = Integer.toHexString(Integer.parseInt(text));
                     cardUID = cardUID.toUpperCase();
                     strUID = cardUID.substring(6, 8) + cardUID.substring(4, 6) + cardUID.substring(2, 4) + cardUID.substring(0, 2);
