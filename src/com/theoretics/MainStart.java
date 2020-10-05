@@ -106,7 +106,7 @@ public class MainStart {
 //        System.out.println(entranceID + " Tap Card Listener " + version);
 
         try {
-            welcomeAudioIn = AudioSystem.getAudioInputStream(MainStart.class.getResource("/sounds/mrdh.wav"));
+            welcomeAudioIn = AudioSystem.getAudioInputStream(MainStart.class.getResource("/sounds/takecard.wav"));
             welcomeClip = AudioSystem.getClip();
             welcomeClip.open(welcomeAudioIn);
         } catch (Exception ex) {
@@ -167,12 +167,24 @@ public class MainStart {
         }
 
         this.cards = new ArrayList<String>();
+        
+        //RaspRC522 rc522 = new RaspRC522();
+        int back_bits[] = new int[1];
+
+        byte tagid[] = new byte[5];
+        int i, status;
+        byte blockaddress = 8;  //读写块地址0-63
+        byte sector = 15, block = 2;
 
         NetworkClock nc = new NetworkClock(this.cards);
         ThrNetworkClock = new Thread(nc);
         ThrNetworkClock.start();
 
-        Scanner scan = new Scanner(System.in);
+        //Old RC522 Reader
+        RaspRC522 rc522 = new RaspRC522();
+        rc522.RC522_Init();
+        //New Black READER
+        //Scanner scan = new Scanner(System.in);
 
         String text = null;
         String cardUID = null;
@@ -204,7 +216,7 @@ public class MainStart {
 //        transistorDispense.pulse(500, true);
 //        Gpio.delay(500);
 //        transistorDispense.pulse(500, true);
-        
+        /* New Black Reader
         while (true) {
             //System.out.print("!");
             strUID = "";
@@ -308,7 +320,90 @@ public class MainStart {
             }
                         
         }
+        */
+        
+        /**
+         * Old Version RC522 Reader
+         */
+        
+        while (true) {            
+            rc522.Reader_Init();
+            System.out.print("!");
+            int stats = 0;
+            stats = rc522.Select_MifareOne(tagid);
+            strUID = "";
+            if (stats != 2) {
+                //System.out.println("" + stats);
+                strUID = Convert.bytesToHex(tagid);
+                if (prevUID.compareToIgnoreCase(strUID) != 0) {
+                    //Uncomment Below to disable Read same Card
+//                    prevUID = strUID;
 
+                    System.out.println("Card Read UID:" + strUID.substring(0, 8));
+                    cardFromReader = strUID.substring(0, 8).toUpperCase();
+//
+                    if (cardFromReader.compareToIgnoreCase("") != 0) {
+                        cards.add(cardFromReader);
+//
+//                        //byte[] buffer2 = {0x2E};
+//                        //comPort.writeBytes(buffer2, 1);
+                    }
+
+                    //led1.pulse(1250, true);
+                    System.out.println("LED Open!");
+                    //led2.pulse(1250, true);
+
+                    // turn on gpio pin1 #01 for 1 second and then off
+                    //System.out.println("--> GPIO state should be: ON for only 3 second");
+                    // set second argument to 'true' use a blocking call
+//                    c.showWelcome(700, false);
+                }
+            }
+            rc522.Stop_Crypto();
+            rc522.AntennaOff();
+//            strUID = null;
+//
+            Date now = new Date();
+//            transistorDispense.pulse(500, true);
+//        transistorReject.pulse(500, true);
+//        System.out.println("Test Dispense");
+            //System.out.println("Hour :  " + now.getHours());
+            if (now.getHours() >= 18) {
+                //relayLights.low();
+            }
+            try {
+                if (SystemInfo.getCpuTemperature() >= 65) {
+                    System.out.println("CPU Temperature   :  " + SystemInfo.getCpuTemperature());
+//                    relayFan.low();
+//                    relayBarrier.low();
+//                    transistorDispense.pulse(500, true);
+                } else {
+//                    relayFan.high();
+//                    relayBarrier.high();
+                }
+            } catch (Exception ex) {
+            }
+
+//            if (null != strUID) {
+//                if (strUID.compareTo("") == 0) {
+//                    transistorDispense.pulse(500, true);
+//                }
+//            } else {
+//                transistorDispense.pulse(500, true);
+//            }
+            if (led1.isLow()) {
+                led1.high();
+            }
+            
+            try {
+                Thread.sleep(500);
+//                rc522 = null;
+//                Thread.sleep(3200);
+//                Thread.yield();
+              } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 
     private void notifyError(Exception ex) {
