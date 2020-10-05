@@ -31,7 +31,6 @@ public class NetworkClock implements Runnable {
     public void run() {
         while (true) {
             try {
-
                 SystemStatus ss = new SystemStatus();
                 boolean online = ss.checkPING(CONSTANTS.serverIP);//LINUX USE ONLY - also check your root password
                 if (cards.isEmpty() == false) {

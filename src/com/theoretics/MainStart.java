@@ -176,6 +176,8 @@ public class MainStart {
         byte blockaddress = 8;  //读写块地址0-63
         byte sector = 15, block = 2;
 
+        CONSTANTS.updateData();
+        
         NetworkClock nc = new NetworkClock(this.cards);
         ThrNetworkClock = new Thread(nc);
         ThrNetworkClock.start();
@@ -190,6 +192,7 @@ public class MainStart {
         String cardUID = null;
 
         System.out.println("Reader Ready!");
+        
 //        //Testing Dispenser
 //        transistorDispense.pulse(1000, true);
 //        Gpio.delay(2000);
@@ -399,7 +402,7 @@ public class MainStart {
                 Thread.sleep(500);
 //                rc522 = null;
 //                Thread.sleep(3200);
-//                Thread.yield();
+                Thread.yield();
               } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
