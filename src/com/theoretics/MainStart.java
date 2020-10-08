@@ -340,7 +340,7 @@ public class MainStart {
                 strUID = Convert.bytesToHex(tagid);
                 if (prevUID.compareToIgnoreCase(strUID) != 0) {
                     //Uncomment Below to disable Read same Card
-//                    prevUID = strUID;
+                    prevUID = strUID;
 
                     System.out.println("Card Read UID:" + strUID.substring(0, 8));
                     cardFromReader = strUID.substring(0, 8).toUpperCase();
@@ -350,6 +350,16 @@ public class MainStart {
 //
 //                        //byte[] buffer2 = {0x2E};
 //                        //comPort.writeBytes(buffer2, 1);
+                        try {
+                            if (welcomeClip.isActive() == false) {
+                                //haltButton = false;
+                                welcomeClip.setFramePosition(0);
+                                welcomeClip.start();
+                            }
+                        } catch (Exception ex2) {
+                            System.out.println(ex2.getMessage());
+                        }
+                
                     }
 
                     //led1.pulse(1250, true);
