@@ -340,7 +340,7 @@ public class MainStart {
                 strUID = Convert.bytesToHex(tagid);
                 if (prevUID.compareToIgnoreCase(strUID) != 0) {
                     //Uncomment Below to disable Read same Card
-                    prevUID = strUID;
+//                    prevUID = strUID;
 
                     System.out.println("Card Read UID:" + strUID.substring(0, 8));
                     cardFromReader = strUID.substring(0, 8).toUpperCase();
