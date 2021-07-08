@@ -27,8 +27,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.util.Scanner;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 
 public class MainStart {
 
@@ -38,7 +38,7 @@ public class MainStart {
     String cardFromReader = "";
 
     ArrayList<String> cards;
-    private static Logger log = LogManager.getLogger(MainStart.class.getName());
+    //private static Logger log = LogManager.getLogger(MainStart.class.getName());
     DateConversionHandler dch = new DateConversionHandler();
     private Thread ThrNetworkClock;
 //    final GpioPinDigitalOutput pin1;
@@ -67,7 +67,7 @@ public class MainStart {
 //    final GpioPinDigitalOutput led2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_26, "POWERLED", PinState.LOW);
 
     //No need for SPI Readers
-    final GpioPinDigitalOutput led1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_05, "HDDLED", PinState.LOW);
+    final GpioPinDigitalOutput led1 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_04, "HDDLED", PinState.LOW);
 //    final GpioPinDigitalOutput led2 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_26, "POWERLED", PinState.LOW);
 
     //Normal CardOK        = GPIO_23
@@ -186,7 +186,7 @@ public class MainStart {
         RaspRC522 rc522 = new RaspRC522();
         rc522.RC522_Init();
         //New Black READER
-        //Scanner scan = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
 
         String text = null;
         String cardUID = null;
@@ -194,14 +194,14 @@ public class MainStart {
         System.out.println("Reader Ready!");
         
 //        //Testing Dispenser
-//        transistorDispense.pulse(1000, true);
-//        Gpio.delay(2000);
-//        transistorReject.pulse(1000, true);
+        transistorDispense.pulse(1000, true);
+        Gpio.delay(2000);
+        transistorReject.pulse(1000, true);
 
         //Testing Relays
-//        relayBarrier.setState(false);
-//        Gpio.delay(2000);
-//        relayBarrier.setState(true);
+        relayBarrier.setState(false);
+        Gpio.delay(2000);
+        relayBarrier.setState(true);
 //        Gpio.delay(2000);
 //        relayFan.setState(false);
 //        Gpio.delay(2000);
@@ -212,14 +212,15 @@ public class MainStart {
 //        relayLights.setState(true);        
 //        System.out.print("RELAYS Tested!");
         //Testing Remotely
-//        cards.add("ABC1234");
+        cards.add("ABC1234");
 
         //Test Dispenser State
 //        System.out.println("Test Dispense State");
 //        transistorDispense.pulse(500, true);
 //        Gpio.delay(500);
 //        transistorDispense.pulse(500, true);
-        /* New Black Reader
+        /*
+        // New Black Reader
         while (true) {
             //System.out.print("!");
             strUID = "";
@@ -263,7 +264,14 @@ public class MainStart {
                         }
 
                         //led1.pulse(1250, true);
+                        relayBarrier.low();
                         System.out.println("LED Open!");
+                            try {
+                            Thread.sleep(2500);
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                            }
+                        relayBarrier.high();
                         //led2.pulse(1250, true);
 
                         // turn on gpio pin1 #01 for 1 second and then off
@@ -417,6 +425,7 @@ public class MainStart {
                 System.out.println(ex.getMessage());
             }
         }
+        
     }
 
     private void notifyError(Exception ex) {

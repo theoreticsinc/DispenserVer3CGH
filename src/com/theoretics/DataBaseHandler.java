@@ -36,8 +36,8 @@ import java.util.concurrent.Executors;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
 
 public class DataBaseHandler extends Thread {
 
@@ -64,7 +64,7 @@ public class DataBaseHandler extends Thread {
     private String dateTimePaid;
     private String dateTimePaidStamp;
 
-    private static Logger log = LogManager.getLogger(DataBaseHandler.class.getName());
+//    private static Logger log = LogManager.getLogger(DataBaseHandler.class.getName());
     Statement stmt = null;
     PreparedStatement statement = null;
     Connection conn = null;
@@ -93,7 +93,7 @@ public class DataBaseHandler extends Thread {
     public void connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost", "root", "sa");
             st = (Statement) con.createStatement();
             String str = "SELECT * FROM carpark.entrance";
             //st.execute(str);
@@ -415,7 +415,7 @@ public class DataBaseHandler extends Thread {
             //mediaPlayer.controls().stop();
             show("Captured", img, 7);
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(DataBaseHandler.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            //java.util.logging.Logger.getLogger(DataBaseHandler.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
 
@@ -1289,14 +1289,14 @@ public class DataBaseHandler extends Thread {
             } catch (Exception ex) {
                 conn = DB.getConnection(false);
                 stmt = conn.createStatement();
-                log.info("Print Error in : " + SQLA);
+                System.err.println("Print Error in : " + SQLA);
                 //int status2 = stmt.executeUpdate(SQL);
                 int status3 = stmt.executeUpdate(SQLA);
                 return true;
             }
 
         } catch (Exception ex) {
-            log.error(ex.getMessage());
+            System.err.println(ex.getMessage());
             return false;
         } finally {
             try {
@@ -1557,7 +1557,7 @@ public class DataBaseHandler extends Thread {
             //DBH.getEntranceCard();
             boolean test = DBH.testTransactionCGHCard(entranceID, cardTest);
             System.out.println("Testing results=" + test);
-            //DBH.getTransactionCGHCard(cardTest);
+            DBH.getTransactionCGHCard(cardTest);
             //DBH.resetEntryTransactions(entranceID);
             //DBH.showCGHEntries(entranceID);
 

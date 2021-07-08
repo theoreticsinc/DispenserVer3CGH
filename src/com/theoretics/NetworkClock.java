@@ -20,7 +20,7 @@ public class NetworkClock implements Runnable {
     ArrayList<String> cards;
     //String serverIP = "192.168.1.10";
     DataBaseHandler dbh = new DataBaseHandler(CONSTANTS.serverIP);
-    static Logger log = LogManager.getLogger(NetworkClock.class.getName());
+    //static Logger log = LogManager.getLogger(NetworkClock.class.getName());
     //String entranceID = "Entry Zone 2";
 
     public NetworkClock(ArrayList<String> cards) {
